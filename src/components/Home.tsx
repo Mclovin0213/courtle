@@ -1,9 +1,5 @@
-import {
-  Box,
-  Button,
-  Stack,
-  Container,
-} from "@mui/material";
+import { Button, Stack } from "@mui/material";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   const buttonStyle = {
@@ -19,17 +15,19 @@ const Home = () => {
         }}
         alignItems={"center"}
       >
-          <Stack direction={"column"} gap={2}>
+        <Stack direction={"column"} gap={2}>
+          <Link to={"/five"}>
             <Button variant="outlined" sx={buttonStyle}>
-              5 Letter Words
+              Play Wordle
             </Button>
-            <Button variant="outlined" sx={buttonStyle}>
-              6 Letter Words
-            </Button>
-            <Button variant="outlined" sx={buttonStyle}>
-              7 letter Words
-            </Button>
-          </Stack>
+          </Link>
+          {/* <Button variant="outlined" sx={buttonStyle}>
+            6 Letter Words
+          </Button>
+          <Button variant="outlined" sx={buttonStyle}>
+            7 letter Words
+          </Button> */}
+        </Stack>
       </Stack>
     </>
   );
