@@ -1,12 +1,12 @@
 import { Box } from "@mui/material";
 import WordRow from "./WordRow";
 
-interface DynamicWordleGridProps {
+interface WordleGridProps {
   attempts: string[][];
   rowColors: string[][];
 }
 
-const DynamicWordleGrid = ({ attempts, rowColors }: DynamicWordleGridProps) => {
+const WordleGrid = ({ attempts, rowColors }: WordleGridProps) => {
   return (
     <Box
       sx={{
@@ -22,4 +22,4 @@ const DynamicWordleGrid = ({ attempts, rowColors }: DynamicWordleGridProps) => {
   );
 };
 
-export default DynamicWordleGrid;
+export default WordleGrid;

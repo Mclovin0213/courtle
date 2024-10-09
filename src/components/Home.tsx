@@ -21,12 +21,16 @@ const Home = () => {
               Play Wordle
             </Button>
           </Link>
-          {/* <Button variant="outlined" sx={buttonStyle}>
-            6 Letter Words
-          </Button>
-          <Button variant="outlined" sx={buttonStyle}>
-            7 letter Words
-          </Button> */}
+          <Link to={'/six'}>
+            <Button variant="outlined" sx={buttonStyle}>
+              6 Letter Words
+            </Button>
+          </Link>
+          <Link to={'/seven'}>
+            <Button variant="outlined" sx={buttonStyle}>
+              7 letter Words
+            </Button>
+          </Link>
         </Stack>
       </Stack>
     </>

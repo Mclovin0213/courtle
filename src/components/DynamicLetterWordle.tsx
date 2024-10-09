@@ -1,25 +1,31 @@
 import { useEffect, useState } from "react";
-import DynamicWordleGrid from "./grid/DynamicWordleGrid.tsx";
-import { WORDS } from "../words.ts";
-import { duration, Stack } from "@mui/material";
+import WordleGrid from "./grid/WordleGrid.tsx";
+import { Stack } from "@mui/material";
 import Keyboard from "./keyboard/Keyboard.tsx";
 import toast from "react-hot-toast";
+import { getWordsArray } from "../scripts/words5.ts";
 
-const NUMBER_OF_GUESSES = 6;
-const WORD_LENGTH = 5;
+interface DynamicLetterWordleProps {
+  word_length: number;
+  number_of_guesses: number;
+  words_path: string;
+}
 
-const FiveLetterWordle = () => {
-  const [attemptsRemaining, setAttemptsRemaining] = useState(NUMBER_OF_GUESSES);
-  const [currentAttempt, setCurrentAttempt] = useState<string[]>(
-    Array(WORD_LENGTH).fill("")
-  );
+const DynamicLetterWordle = ({ word_length, number_of_guesses, words_path }: DynamicLetterWordleProps) => {
+  const WORDS = getWordsArray(words_path)
+
+  const [attemptsRemaining, setAttemptsRemaining] = useState(number_of_guesses);
   const [nextLetter, setNextLetter] = useState(0);
+  const [currentAttempt, setCurrentAttempt] = useState<string[]>(
+    Array(word_length).fill("")
+  );
+
   const [correctWord, setCorrectWord] = useState("");
   const [board, setBoard] = useState(
-    Array(NUMBER_OF_GUESSES).fill(Array(WORD_LENGTH).fill(""))
+    Array(number_of_guesses).fill(Array(word_length).fill(""))
   );
   const [rowColors, setRowColors] = useState(
-    Array(NUMBER_OF_GUESSES).fill(Array(WORD_LENGTH).fill("transparent"))
+    Array(number_of_guesses).fill(Array(word_length).fill("transparent"))
   );
   const [gameOver, setGameOver] = useState(false);
   const [keyboardColors, setKeyboardColors] = useState<{
@@ -27,7 +33,7 @@ const FiveLetterWordle = () => {
   }>({});
 
   useEffect(() => {
-    setCorrectWord(WORDS[Math.floor(Math.random() * WORDS.length)]);
+    setCorrectWord(WORDS[Math.floor(Math.random() * WORDS.length)].toLowerCase());
   }, []);
 
   console.log(correctWord);
@@ -45,7 +51,7 @@ const FiveLetterWordle = () => {
   };
 
   const insertLetter = (key: string) => {
-    if (nextLetter >= WORD_LENGTH || gameOver) return;
+    if (nextLetter >= word_length || gameOver) return;
 
     const newCurrentGuess = currentAttempt;
     newCurrentGuess[nextLetter] = key.toLowerCase();
@@ -53,7 +59,7 @@ const FiveLetterWordle = () => {
     setNextLetter(nextLetter + 1);
 
     const newBoard = [...board];
-    newBoard[NUMBER_OF_GUESSES - attemptsRemaining] = newCurrentGuess;
+    newBoard[number_of_guesses - attemptsRemaining] = newCurrentGuess;
     setBoard(newBoard);
   };
 
@@ -66,7 +72,7 @@ const FiveLetterWordle = () => {
     setNextLetter(nextLetter - 1);
 
     const newBoard = [...board];
-    newBoard[NUMBER_OF_GUESSES - attemptsRemaining] = newCurrentGuess;
+    newBoard[word_length - attemptsRemaining] = newCurrentGuess;
     setBoard(newBoard);
   };
 
@@ -84,13 +90,13 @@ const FiveLetterWordle = () => {
 
     const newBoard = [...board];
     const newRowColors = [...rowColors];
-    const row = newBoard[NUMBER_OF_GUESSES - attemptsRemaining];
+    const row = newBoard[number_of_guesses - attemptsRemaining];
     const rightGuess = Array.from(correctWord);
 
-    const letterColors = Array(WORD_LENGTH).fill("gray");
+    const letterColors = Array(word_length).fill("gray");
     const newKeyboardColors = { ...keyboardColors };
 
-    for (let i = 0; i < WORD_LENGTH; i++) {
+    for (let i = 0; i < word_length; i++) {
       if (currentAttempt[i] === rightGuess[i]) {
         letterColors[i] = "green";
         rightGuess[i] = "#";
@@ -104,11 +110,11 @@ const FiveLetterWordle = () => {
       }
     }
 
-    newRowColors[NUMBER_OF_GUESSES - attemptsRemaining] = letterColors;
+    newRowColors[number_of_guesses - attemptsRemaining] = letterColors;
     setRowColors(newRowColors);
     setKeyboardColors(newKeyboardColors);
 
-    for (let i = 0; i < WORD_LENGTH; i++) {
+    for (let i = 0; i < word_length; i++) {
       row[i] = currentAttempt[i];
     }
 
@@ -122,7 +128,7 @@ const FiveLetterWordle = () => {
 
     const newGuessesRemaining = attemptsRemaining - 1;
     setAttemptsRemaining(newGuessesRemaining);
-    setCurrentAttempt(Array(WORD_LENGTH).fill(""));
+    setCurrentAttempt(Array(word_length).fill(""));
     setNextLetter(0);
 
     if (newGuessesRemaining === 0) {
@@ -134,10 +140,10 @@ const FiveLetterWordle = () => {
 
   return (
     <Stack direction={"column"}>
-      <DynamicWordleGrid attempts={board} rowColors={rowColors} />
+      <WordleGrid attempts={board} rowColors={rowColors} />
       <Keyboard onKeyPress={handleKeyPress} keyboardColors={keyboardColors} />
     </Stack>
   );
 };
 
-export default FiveLetterWordle;
+export default DynamicLetterWordle;
