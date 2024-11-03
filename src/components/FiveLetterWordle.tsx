@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import DynamicWordleGrid from "./grid/DynamicWordleGrid.tsx";
 import { WORDS } from "../words.ts";
-import { duration, Stack } from "@mui/material";
+import { Stack } from "@mui/material";
 import Keyboard from "./keyboard/Keyboard.tsx";
 import toast from "react-hot-toast";
 
